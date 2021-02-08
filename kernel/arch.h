@@ -30,8 +30,8 @@ void arch_write_cr4(uint64_t val);
 void arch_enable_paging();
 void arch_disable_paging();
 
-void arch_set_pagedir(uint64_t pointer);
-void arch_invalidate_pagedir();
+void arch_set_cr3(uint64_t pointer);
+void arch_invalidate_cr3();
 
 void arch_wrmsr(uint64_t msr_id, uint64_t value);
 uint64_t arch_rdmsr(uint64_t msr_id);

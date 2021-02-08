@@ -104,25 +104,25 @@ void arch_write_cr4(uint64_t val) {
 }
 
 void arch_enable_paging() {
-	arch_write_cr0(arch_read_cr0() | (1 << 0));
+	arch_write_cr0(arch_read_cr0() | (1 << 31));
 }
 
 void arch_disable_paging() {
-	arch_write_cr0(arch_read_cr0() & ~(1 << 0));
+	arch_write_cr0(arch_read_cr0() & ~(1 << 31));
 }
 
-void arch_set_pagedir(uint64_t pointer) {
+void arch_set_cr3(uint64_t pointer) {
 	asm volatile ("mov %0, %%cr3" : "=r"(pointer));
 }
 
-void arch_invalidate_pagedir() {
+void arch_invalidate_cr3() {
 	asm volatile (
 		"mov %cr3, %rax;"
 		"mov %rax, %cr3;"
 	);
 }
 
-void wrmsr(uint64_t msr, uint64_t value) {
+void arch_wrmsr(uint64_t msr, uint64_t value) {
 	uint32_t low = value & 0xFFFFFFFF;
 	uint32_t high = value >> 32;
 	asm volatile (
@@ -132,7 +132,7 @@ void wrmsr(uint64_t msr, uint64_t value) {
 	);
 }
 
-uint64_t rdmsr(uint64_t msr) {
+uint64_t arch_rdmsr(uint64_t msr) {
 	uint32_t low, high;
 	asm volatile (
 		"rdmsr"
