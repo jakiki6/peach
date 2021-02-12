@@ -8,6 +8,8 @@
 
 static uint8_t stack[4096];
 
+extern uint64_t p4[512];
+
 struct stivale2_header_tag_framebuffer framebuffer_hdr_tag = {
 	.tag = {
 		.identifier = STIVALE2_HEADER_TAG_FRAMEBUFFER_ID,
@@ -56,9 +58,10 @@ void kmain(struct stivale2_struct *stivale2_struct) {
 	}
 
 	uint8_t *fb_addr = (uint8_t *)fb_hdr_tag->framebuffer_addr;
+	size_t fb_size = (size_t) (fb_hdr_tag->framebuffer_width * fb_hdr_tag->framebuffer_height * fb_hdr_tag->framebuffer_bpp);
 
-	for (size_t i = 0; i < sizeof(p4); i++) {
-		fb_addr[i] = *((uint8_t *) p4 + i);
+	for (size_t i = 0; i < fb_size; i++) {
+		fb_addr[i] = *((uint8_t *) &p4 + i);
 	}
 
 	arch_halt();

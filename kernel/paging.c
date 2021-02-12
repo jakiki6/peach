@@ -2,7 +2,7 @@
 
 #include "arch.h"
 
-static uint64_t p4[512] __attribute__((aligned(4096)));
+uint64_t p4[512] __attribute__((aligned(4096)));
 static uint64_t p3[512] __attribute__((aligned(4096)));
 static uint64_t p2s[2][512] __attribute__((aligned(4096)));
 
