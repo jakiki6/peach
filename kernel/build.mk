@@ -1,8 +1,10 @@
 TARGET := kernel/kernel.elf
+SYMBOLS := kernel/kernel.sym
 
 CC = x86_64-elf-gcc
 LD = x86_64-elf-ld
 STRIP = x86_64-elf-strip
+OBJCOPY = x86_64-elf-objcopy
 
 CFLAGS = -Wall -Wextra -O2 -pipe
 
@@ -36,10 +38,11 @@ kernel_all: $(TARGET)
 
 $(TARGET): $(OBJ)
 	$(LD) $(LDINTERNALFLAGS) $(OBJ) -o $@
+	$(OBJCOPY) --only-keep-debug $@ $(SYMBOLS)
 	$(STRIP) $@
 
 %.o: %.c
 	$(CC) $(CFLAGS) $(INTERNALCFLAGS) -c $< -o $@
 
 kernel_clean:
-	rm -rf $(TARGET) $(OBJ)
+	rm -rf $(TARGET) $(OBJ) $(SYMBOLS)

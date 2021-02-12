@@ -3,7 +3,7 @@ export PATH:=$(shell toolchain/use-it.sh):$(PATH)
 all: run
 
 run: os.img
-	qemu-system-x86_64 -enable-kvm -m 256M -hda $< -serial stdio
+	qemu-system-x86_64 -s -enable-kvm -m 256M -hda $< -serial stdio
 
 include kernel/build.mk
 

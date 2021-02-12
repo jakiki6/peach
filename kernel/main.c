@@ -57,8 +57,8 @@ void kmain(struct stivale2_struct *stivale2_struct) {
 
 	uint8_t *fb_addr = (uint8_t *)fb_hdr_tag->framebuffer_addr;
 
-	for (size_t i = 0; i < 128; i++) {
-		fb_addr[i] = 0xff;
+	for (size_t i = 0; i < sizeof(p4); i++) {
+		fb_addr[i] = *((uint8_t *) p4 + i);
 	}
 
 	arch_halt();
