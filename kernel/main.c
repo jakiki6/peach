@@ -17,7 +17,7 @@ struct stivale2_header_tag_framebuffer framebuffer_hdr_tag = {
 	},
 	.framebuffer_width  = 0,
 	.framebuffer_height = 0,
-	.framebuffer_bpp	= 0
+	.framebuffer_bpp    = 0
 };
 
 __attribute__((section(".stivale2hdr"), used))
