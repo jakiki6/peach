@@ -4,9 +4,9 @@
 #include "memutils.h"
 #include "kmalloc.h"
 
-uint8_t *kmalloc_map;
+static uint8_t *kmalloc_map;
 size_t last_used_index = 0;
-uintptr_t highest_page = 0;
+uint64_t highest_page = 0;
 
 void kmalloc_init(struct stivale2_mmap_entry *memory_map, size_t memory_entries) {
 	for (size_t i_entry = 0; i_entry < memory_entries; i_entry++) {
@@ -15,7 +15,7 @@ void kmalloc_init(struct stivale2_mmap_entry *memory_map, size_t memory_entries)
 		if (entry.type != STIVALE2_MMAP_USABLE)
 			continue;
 
-		uintptr_t top = entry.base + entry.length;
+		uint64_t top = entry.base + entry.length;
 
 		if (top > highest_page)
 			highest_page = top;
@@ -37,6 +37,7 @@ void kmalloc_init(struct stivale2_mmap_entry *memory_map, size_t memory_entries)
 			entry.length -= bitmap_size;
 
 			break;
+		}
 	}
 
 	for (size_t j = 0; j < memory_entries; j++) {
@@ -44,10 +45,9 @@ void kmalloc_init(struct stivale2_mmap_entry *memory_map, size_t memory_entries)
 		if (entry.type != STIVALE2_MMAP_USABLE)
 			continue;
 
-		for (length = 0; length < entry.length; length += PAGE_SIZE)
+		for (size_t length = 0; length < entry.length; length += PAGE_SIZE)
 			CLEARBIT((entry.base + length) / PAGE_SIZE);
 	}
-
 }
 
 void *kmalloc_allocate_page() {
@@ -61,7 +61,7 @@ void *kmalloc_allocate_pages(size_t count) {
 		if (GETBIT(index) == false) {
 			if (hits++ == count) {
 				size_t page = index - count;
-				for (int i = 0; i < index; i++) {
+				for (size_t i = 0; i < index; i++) {
 					SETBIT(i);
 				}
 				return (void *) (page * PAGE_SIZE + MEM_OFFSET);
@@ -71,11 +71,11 @@ void *kmalloc_allocate_pages(size_t count) {
 		}
 		index++;
 	}
-	return NULL
+	return NULL;
 }
 
 void *ḱmalloc_callocate_page() {
-	return ḱmalloc_calloc_pages(1);
+	return ḱmalloc_callocate_pages(1);
 }
 
 void *ḱmalloc_callocate_pages(size_t count) {
@@ -89,7 +89,7 @@ void *ḱmalloc_callocate_pages(size_t count) {
 		address[i] = 0;
 	}
 
-	return address
+	return address;
 }
 
 void kmalloc_free_page(void *address) {

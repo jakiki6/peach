@@ -1,1 +1,1 @@
-void panic(char * msg);
+void panic(char *msg);

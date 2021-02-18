@@ -1,5 +1,7 @@
 #include <stivale2.h>
 
+#include <stddef.h>
+
 #include "main.h"
 #include "panic.h"
 
@@ -8,26 +10,19 @@ static uint8_t stack[4096];
 struct stivale2_header_tag_framebuffer framebuffer_hdr_tag = {
 	.tag = {
 		.identifier = STIVALE2_HEADER_TAG_FRAMEBUFFER_ID,
-		.next = &memory_map_tag
+		.next = 0
 	},
 	.framebuffer_width  = 0,
 	.framebuffer_height = 0,
 	.framebuffer_bpp    = 0
 };
 
-struct stivale2_header_tag_memmap memory_map_tag = {
-	.tag = {
-		.identifier = STIVALE2_STRUCT_TAG_MEMMAP_ID,
-		.next = 0
-	}
-}
-
 __attribute__((section(".stivale2hdr"), used))
 struct stivale2_header stivale_hdr = {
 	.entry_point = 0,
-	.stack = (uintptr_t)stack + sizeof(stack),
+	.stack = (uint64_t) &stack + sizeof(stack),
 	.flags = 0,
-	.tags = (uintptr_t)&framebuffer_hdr_tag
+	.tags = (uint64_t) &framebuffer_hdr_tag
 };
 
 void *stivale2_get_tag(struct stivale2_struct *stivale2_struct, uint64_t id) {
@@ -46,7 +41,7 @@ void *stivale2_get_tag(struct stivale2_struct *stivale2_struct, uint64_t id) {
 }
 
 void boot_main(struct stivale2_struct *info) {
-	struct stivale2_struct_tag_framebuffer videoheader = stivale2_get_tag(info, STIVALE2_STRUCT_TAG_FRAMEBUFFER_ID);
+	struct stivale2_struct_tag_framebuffer *videoheader = stivale2_get_tag(info, STIVALE2_STRUCT_TAG_FRAMEBUFFER_ID);
 	struct stivale2_struct_tag_memmap *memory_map = stivale2_get_tag(info, STIVALE2_STRUCT_TAG_MEMMAP_ID);
 
 	boot_info bootinfo;

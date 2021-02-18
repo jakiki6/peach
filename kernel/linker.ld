@@ -4,7 +4,7 @@ ENTRY(boot_main)
 SECTIONS
 {
     __memory_offset = 0xffffffff80000000;
-    . = __memory_offset + 0x100000;
+    . = __memory_offset + 2M;
 
     /* We place the .stivalehdr section containing the header in its own section, */
     /* and we use the KEEP directive on it to make sure it doesn't get discarded. */

@@ -12,7 +12,7 @@ void kmain(boot_info handover) {
 	arch_interrupts_disable();
 
 	// init kmalloc
-	kmalloc_init();
+	kmalloc_init(handover.memory_map->memmap, handover.memory_entries);
 
 	// setup paging
 	paging_init();

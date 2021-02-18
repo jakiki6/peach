@@ -2,11 +2,11 @@ extern int __memory_offset;
 
 #define PAGE_SIZE 4096
 #define MEM_OFFSET __memory_offset
-#define SETBIT(i) malloc_map[i / 8] = malloc_bitmap[i / 8] | (1 << (i % 8))
-#define CLEARBIT(i) malloc_map[i / 8] = malloc_map[i / 8] & (~(1 << (i % 8)))
-#define GETBIT(i) mallocmap[i / 8 + b] >> b
+#define SETBIT(i) kmalloc_map[i / 8] = kmalloc_map[i / 8] | (1 << (i % 8))
+#define CLEARBIT(i) kmalloc_map[i / 8] = kmalloc_map[i / 8] & (~(1 << (i % 8)))
+#define GETBIT(i) kmalloc_map[i / 8] << (i & 7)
 
-#include <boot/stivale2.h>
+#include <stivale2.h>
 #include <stddef.h>
 
 void kmalloc_init(struct stivale2_mmap_entry *memory_map, size_t memory_entries);

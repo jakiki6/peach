@@ -5,24 +5,24 @@
 #include "klib.h"
 #include "paging.h"
 
-page_map paging_new_pagemap() {
+page_map *paging_new_pagemap() {
 	page_map *pagemap = (page_map *) kmalloc(sizeof(page_map));
 
-	pagemap->pml4 = kmalloc_callocate_page();
+	pagemap->pml4 = ḱmalloc_callocate_page();
 
 	return pagemap;
 }
-static uintptr_t *get_next_level(uint64_t *current, uint16_t index)
+static uint64_t *get_next_level(uint64_t *current, uint16_t index)
 {
-	uintptr_t ret;
+	uint64_t ret;
 	if (current[index] & 0x1) {
-		ret = current[index] & ~((uintptr_t)0xfff);
+		ret = current[index] & ~((uint64_t)0xfff);
 	} else {
-		ret = (uintptr_t)PMM_callocate_page();
+		ret = (uint64_t) ḱmalloc_callocate_page();
 		current[index] = ret | 0b11;
 	}
 
-	return (void *)ret + MEM_OFFSET;
+	return (void *) ret + MEM_OFFSET;
 }
 
 void paging_map_page(page_map *pagemap, uint64_t physical_address, uint64_t virtual_address, uint64_t flags) {
@@ -33,7 +33,7 @@ void paging_map_page(page_map *pagemap, uint64_t physical_address, uint64_t virt
 
 	uint64_t *pml4, *pml3, *pml2, *pml1;
 
-	pml4 = (void *) page_map->pml4;
+	pml4 = (void *) pagemap->pml4;
 
 	pml3 = get_next_level(pml4, level4);
 	if (!pml3) {
