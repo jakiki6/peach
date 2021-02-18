@@ -33,7 +33,7 @@ void *kcalloc(size_t size) {
         return address;
 }
 
-void free(void *address) {
+void kfree(void *address) {
 	address = address - sizeof(heap_data);
 
 	heap_data *meta = (heap_data *) address;
