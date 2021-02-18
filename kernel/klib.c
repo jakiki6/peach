@@ -20,7 +20,7 @@ void *kmalloc(size_t size) {
 void *kcalloc(size_t size) {
         size_t pages = (size + sizeof(heap_data)) / PAGE_SIZE + 1;
 
-        void *address = ḱmalloc_callocate_pages(pages);
+        void *address = kmalloc_callocate_pages(pages);
 
         heap_data *meta = (heap_data *) address;
         address = address + sizeof(heap_data);

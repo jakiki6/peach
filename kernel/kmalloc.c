@@ -74,11 +74,11 @@ void *kmalloc_allocate_pages(size_t count) {
 	return NULL;
 }
 
-void *ḱmalloc_callocate_page() {
-	return ḱmalloc_callocate_pages(1);
+void *kmalloc_callocate_page() {
+	return kmalloc_callocate_pages(1);
 }
 
-void *ḱmalloc_callocate_pages(size_t count) {
+void *kmalloc_callocate_pages(size_t count) {
 	uint8_t *address = (uint8_t *) kmalloc_allocate_pages(count);
 
 	if (address == NULL) {

@@ -8,7 +8,7 @@
 page_map *paging_new_pagemap() {
 	page_map *pagemap = (page_map *) kmalloc(sizeof(page_map));
 
-	pagemap->pml4 = ḱmalloc_callocate_page();
+	pagemap->pml4 = kmalloc_callocate_page();
 
 	return pagemap;
 }
@@ -18,7 +18,7 @@ static uint64_t *get_next_level(uint64_t *current, uint16_t index)
 	if (current[index] & 0x1) {
 		ret = current[index] & ~((uint64_t)0xfff);
 	} else {
-		ret = (uint64_t) ḱmalloc_callocate_page();
+		ret = (uint64_t) kmalloc_callocate_page();
 		current[index] = ret | 0b11;
 	}
 

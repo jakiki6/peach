@@ -14,8 +14,8 @@ void kmalloc_init(struct stivale2_mmap_entry *memory_map, size_t memory_entries)
 void *kmalloc_allocate_page();
 void *kmalloc_allocate_pages(size_t count);
 
-void *ḱmalloc_callocate_page();
-void *ḱmalloc_callocate_pages(size_t count);
+void *kmalloc_callocate_page();
+void *kmalloc_callocate_pages(size_t count);
 
 void kmalloc_free_page(void *address);
 void kmalloc_free_pages(void *address, size_t count);
