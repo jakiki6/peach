@@ -58,14 +58,14 @@ void arch_nmi_disable() {
 	arch_outb(0x70, arch_inb(0x70) | 0x80);
 }
 
-void arch_lidt(void* base, uint16_t size) {
-	struct {
-		uint16_t length;
-		void*    base;
-	} __attribute__((packed)) IDTR = { size, base };
- 
-	asm volatile ("lidt %0" : : "m"(IDTR));
+void arch_lidt(void* idt) {
+	asm volatile ("lidt %0" : : "m"(idt));
 }
+
+void arch_lgdt(void* gdt) {                
+        asm volatile ("lgdt %0" : : "m"(gdt));
+}
+
 
 void arch_cpuid(int code, uint32_t *a, uint32_t *d) {
 	asm volatile ("cpuid" : "=a"(*a), "=d"(*d) : "0"(code) : "ebx", "ecx");
@@ -140,4 +140,24 @@ uint64_t arch_rdmsr(uint64_t msr) {
 		: "c"(msr)
 	);
 	return ((uint64_t) high << 32) | low;
+}
+
+void arch_set_code_segment(uint8_t value) {
+	asm volatile (
+		"mov %%cs, %%ax"
+		:
+		: "a"(value)
+	);
+}
+
+void arch_set_data_segments(uint8_t value) {
+        asm volatile (  
+                "mov %%ds, %%ax;"
+                "mov %%es, %%ax;"
+                "mov %%ss, %%ax;"
+                "mov %%fs, %%ax;"
+                "mov %%gs, %%ax;"
+                :
+                : "a"(value)
+        );
 }

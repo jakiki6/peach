@@ -2,3 +2,4 @@ os.img
 *.o
 *.elf
 *.sym
+log.txt

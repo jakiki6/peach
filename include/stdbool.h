@@ -1,3 +1,3 @@
 #include <stdint.h>
 
-typedef bool uint8_t;
+typedef uint8_t bool;

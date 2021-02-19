@@ -5,6 +5,7 @@ CC = x86_64-elf-gcc
 LD = x86_64-elf-ld
 STRIP = x86_64-elf-strip
 OBJCOPY = x86_64-elf-objcopy
+ASM = nasm
 
 CFLAGS = -Wall -Wextra -O2 -pipe
 
@@ -30,7 +31,8 @@ INTERNALCFLAGS  :=       \
 	-I thirdparty/stivale/
 
 CFILES := $(shell find ./kernel/ -type f -name '*.c')
-OBJ    := $(CFILES:.c=.o)
+ASMFILES := $(shell find ./kernel/ -type f -name '*.asm')
+OBJ    := $(CFILES:.c=.o) $(ASMFILES:.asm=.o)
 
 .PHONY: all clean
 
@@ -43,6 +45,9 @@ $(TARGET): $(OBJ)
 
 %.o: %.c
 	$(CC) $(CFLAGS) $(INTERNALCFLAGS) -c $< -o $@
+
+%.o: %.asm
+	$(ASM) -f elf64 $< -o $@
 
 kernel_clean:
 	rm -rf $(TARGET) $(OBJ) $(SYMBOLS)
