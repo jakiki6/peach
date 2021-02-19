@@ -13,7 +13,8 @@ unsigned long arch_are_interrupts_enabled();
 void arch_nmi_enable();
 void arch_nmi_disable();
 
-void arch_lidt(void* base, uint16_t size);
+void arch_lidt(void* idt);
+void arch_lgdt(void* gdt);
 
 void arch_cpuid(int code, uint32_t *a, uint32_t *d);
 
@@ -35,3 +36,6 @@ void arch_invalidate_cr3();
 
 void arch_wrmsr(uint64_t msr_id, uint64_t value);
 uint64_t arch_rdmsr(uint64_t msr_id);
+
+void arch_set_code_segment(uint8_t value);
+void arch_set_code_segment(uint8_t value);

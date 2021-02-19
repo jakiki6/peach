@@ -17,12 +17,8 @@ SECTIONS
         *(.text*)
     }
 
-    .rodata ALIGN(4K) : {
-        *(.rodata*)
-    }
-
     .data ALIGN(4K) : {
-        *(.data*)
+        *(.data* .rodata .rodata.*)
     }
 
     .bss ALIGN(4K) : {
@@ -33,4 +29,5 @@ SECTIONS
    .text : { *(.text) }
    .data : { *(.data) }
    .bss  : { *(.bss)  }
+   /DISCARD/ : { *(.comment) }
 }

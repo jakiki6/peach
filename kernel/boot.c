@@ -5,7 +5,7 @@
 #include "main.h"
 #include "panic.h"
 
-static uint8_t stack[4096];
+static uint8_t stack[65536];
 
 struct stivale2_header_tag_framebuffer framebuffer_hdr_tag = {
 	.tag = {
