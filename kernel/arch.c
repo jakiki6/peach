@@ -58,12 +58,12 @@ void arch_nmi_disable() {
 	arch_outb(0x70, arch_inb(0x70) | 0x80);
 }
 
-void arch_lidt(void* idt) {
-	asm volatile ("lidt %0" : : "m"(idt));
+void arch_lidt(uint64_t idt) {
+	asm volatile ("lidt (%0)" : : "r"(idt));
 }
 
-void arch_lgdt(void* gdt) {                
-        asm volatile ("lgdt %0" : : "m"(gdt));
+void arch_lgdt(uint64_t gdt) {
+        asm volatile ("lgdt (%0)" : : "r"(gdt));
 }
 
 
