@@ -55,12 +55,18 @@ void boot_main(struct stivale2_struct *info) {
 		if (entry->type == STIVALE2_MMAP_USABLE)
 		{
 			usable_mem += entry->length;
-			bootinfo.memory_top = entry->base + entry->length;
+			bootinfo.memory_top = (uintptr_t) entry->base + entry->length;
 		}
 
 		bootinfo.memory_usable = usable_mem;
 		bootinfo.total_memory = total_mem;
 	}
+
+	bootinfo.framebuffer_addr = videoheader->framebuffer_addr;
+	bootinfo.framebuffer_width = videoheader->framebuffer_width;
+	bootinfo.framebuffer_height = videoheader->framebuffer_height;
+        bootinfo.framebuffer_pitch = videoheader->framebuffer_pitch;
+        bootinfo.framebuffer_bpp = videoheader->framebuffer_bpp;
 
 	kmain(bootinfo);
 

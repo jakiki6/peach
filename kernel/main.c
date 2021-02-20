@@ -1,5 +1,6 @@
 #include <stdint.h>
 #include <stddef.h>
+#include <klib/klib.h>
 
 #include "arch.h"
 #include "paging.h"
@@ -24,6 +25,9 @@ void kmain(boot_info handover) {
 
 	// init kmalloc
 	kmalloc_init(handover.memory_map->memmap, handover.memory_entries);
+
+	// test kmalloc
+	log("test malloc.: %llu", kmalloc(512));
 
 	// setup paging
 	paging_init();

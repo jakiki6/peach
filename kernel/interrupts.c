@@ -26,11 +26,11 @@ void register_interrupt(uint64_t handler, uint8_t number, bool user) {
 }
 
 void interrupts_init() {
-	register_interrupt(&asm_handler_double_fault, 0x08, false);
-	register_interrupt(&asm_handler_page_fault, 0x0e, false);
+	register_interrupt((uint64_t) &asm_handler_double_fault, 0x08, false);
+	register_interrupt((uint64_t) &asm_handler_page_fault, 0x0e, false);
 
 	desc.limit = sizeof(entries) - 1;
-	desc.base = &entries;
+	desc.base = (uint64_t) &entries;
 
-	arch_lidt(&desc);
+	arch_lidt((uint64_t) &desc);
 }

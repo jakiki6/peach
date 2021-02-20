@@ -1,8 +1,9 @@
 #include <stdint.h>
+#include <klib/klib.h>
 
+#include "arch.h"
 #include "logging.h"
 #include "kmalloc.h"
-#include "klib.h"
 #include "paging.h"
 
 page_map *paging_new_pagemap() {
@@ -18,7 +19,7 @@ static uint64_t *get_next_level(uint64_t *current, uint16_t index)
 	if (current[index] & 0x1) {
 		ret = current[index] & ~((uint64_t) 0xfff);
 	} else {
-		ret = (uint64_t *) kmalloc_callocate_page();
+		ret = (uint64_t) kmalloc_callocate_page();
 		current[index] = ret | 0b11;
 	}
 
@@ -60,5 +61,5 @@ void paging_init() {
 		paging_map_page(kernel_map, i, i + MEM_OFFSET, 0b11);
 	}
 
-	arch_set_cr3(kernel_map->pml4);
+	arch_set_cr3((uint64_t) kernel_map->pml4);
 }

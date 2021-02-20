@@ -7,3 +7,7 @@ typedef struct {
 void *kmalloc(size_t size);
 void *kcalloc(size_t size);
 void kfree(void *address);
+
+void panic(const char* format, ...);
+void log(const char* format, ...);
+void debug(const char* format, ...);
