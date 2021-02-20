@@ -4,6 +4,7 @@
 
 #include "main.h"
 #include "logging.h"
+#include "arch.h"
 
 static uint8_t stack[65536];
 
@@ -41,6 +42,7 @@ void *stivale2_get_tag(struct stivale2_struct *stivale2_struct, uint64_t id) {
 }
 
 void boot_main(struct stivale2_struct *info) {
+
 	struct stivale2_struct_tag_framebuffer *videoheader = stivale2_get_tag(info, STIVALE2_STRUCT_TAG_FRAMEBUFFER_ID);
 	struct stivale2_struct_tag_memmap *memory_map = stivale2_get_tag(info, STIVALE2_STRUCT_TAG_MEMMAP_ID);
 

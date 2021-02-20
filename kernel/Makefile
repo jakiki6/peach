@@ -1,7 +1,7 @@
 include ../flags/kernel.mk
 
 TARGET := kernel.elf
-SYMBOSL := kernel.sym
+SYMBOLS := kernel.sym
 
 LIBS := ../libraries/klib.a ../libraries/libprintf.a
 

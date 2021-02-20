@@ -14,6 +14,8 @@ void kmain(boot_info handover) {
 	// disable irq because we don't have idt yet
 	arch_interrupts_disable();
 
+	module("boot");
+
 	// setup serial in case of a panic
 	serial_init();
 
@@ -26,11 +28,11 @@ void kmain(boot_info handover) {
 	// init kmalloc
 	kmalloc_init(handover.memory_map->memmap, handover.memory_entries);
 
-	// test kmalloc
-	log("test malloc.: %llu", kmalloc(512));
-
 	// setup paging
 	paging_init();
+
+	log("Boot completed");
+	module("kernel");
 
 	for (;;);
 }

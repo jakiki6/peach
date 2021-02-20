@@ -66,3 +66,7 @@ void debug(const char* format, ...) {
         va_end(args);
         logging_debug((char *) &print_buffer);
 }
+
+void module(char *name) {
+	logging_module(name);
+}

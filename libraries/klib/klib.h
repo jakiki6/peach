@@ -11,3 +11,4 @@ void kfree(void *address);
 void panic(const char* format, ...);
 void log(const char* format, ...);
 void debug(const char* format, ...);
+void module(char *name);
