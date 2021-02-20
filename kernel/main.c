@@ -25,5 +25,5 @@ void kmain(boot_info handover) {
 	// setup paging
 	paging_init();
 
-	arch_halt();
+	for (;;);
 }

@@ -25,8 +25,10 @@ uint16_t arch_inw(uint16_t port) {
 }
 
 void arch_halt() {
-	for (;;)
+	arch_interrupts_disable();
+	while (1) {
 		asm volatile ("hlt");
+	}
 }
 
 void arch_reboot() {

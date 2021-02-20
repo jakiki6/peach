@@ -42,7 +42,7 @@ kernel_all: $(TARGET)
 $(TARGET): $(OBJ)
 	$(LD) $(LDINTERNALFLAGS) $(OBJ) -o $@
 	$(OBJCOPY) --only-keep-debug $@ $(SYMBOLS)
-	$(STRIP) $@
+#	$(STRIP) $@
 
 %.o: %.c
 	$(CC) $(CFLAGS) $(INTERNALCFLAGS) -c $< -o $@
