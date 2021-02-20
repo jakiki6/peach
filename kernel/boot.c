@@ -3,7 +3,7 @@
 #include <stddef.h>
 
 #include "main.h"
-#include "panic.h"
+#include "logging.h"
 
 static uint8_t stack[65536];
 
@@ -64,5 +64,5 @@ void boot_main(struct stivale2_struct *info) {
 
 	kmain(bootinfo);
 
-	panic("HOW DID YOU GET HERE WTF");
+	logging_panic("HOW DID YOU GET HERE WTF");
 }

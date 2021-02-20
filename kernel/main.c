@@ -2,16 +2,19 @@
 #include <stddef.h>
 
 #include "arch.h"
-#include "panic.h"
 #include "paging.h"
 #include "kmalloc.h"
 #include "boot.h"
 #include "interrupts.h"
 #include "gdt.h"
+#include "serial.h"
 
 void kmain(boot_info handover) {
 	// disable irq because we don't have idt yet
 	arch_interrupts_disable();
+
+	// setup serial in case of a panic
+	serial_init();
 
 	// init gdt
 	gdt_init();
