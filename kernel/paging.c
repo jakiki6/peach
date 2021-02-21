@@ -5,6 +5,7 @@
 #include "logging.h"
 #include "kmalloc.h"
 #include "paging.h"
+#include "boot.h"
 
 page_map *paging_new_pagemap() {
 	page_map *pagemap = (page_map *) kcalloc(sizeof(page_map));
@@ -27,8 +28,6 @@ static uint64_t *get_next_level(uint64_t *current, uint16_t index)
 }
 
 void paging_map_page(page_map *pagemap, uint64_t physical_address, uint64_t virtual_address, uint64_t flags) {
-	module("paging");
-
 	uint64_t level4 = (virtual_address >> 39) & 0x1FF;
 	uint64_t level3 = (virtual_address >> 30) & 0x1FF;
 	uint64_t level2 = (virtual_address >> 21) & 0x1FF;
@@ -47,13 +46,17 @@ void paging_map_page(page_map *pagemap, uint64_t physical_address, uint64_t virt
 	pml1[level1] = physical_address | flags;
 }
 
-void paging_init() {
-	page_map *kernel_map = paging_new_pagemap();
-	log("kernel page map is at 0x%llx");
+void paging_init(boot_info handover) {
+	module("paging");
 
-	for (uint64_t i = 0; i < 0x10000000; i += PAGE_SIZE) {
+	page_map *kernel_map = paging_new_pagemap();
+	log("kernel page map is at 0x%llx", kernel_map);
+
+	for (uint64_t i = 0; i < handover.memory_usable; i += PAGE_SIZE) {
 		paging_map_page(kernel_map, i, i + MEM_OFFSET, 0b11);
 	}
+
+	log("finished mapping pages");
 
 	arch_set_cr3((uint64_t) kernel_map->pml4);
 	module("boot");

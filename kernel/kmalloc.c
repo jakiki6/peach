@@ -67,23 +67,28 @@ void *kmalloc_allocate_page() {
 }
 
 void *kmalloc_allocate_pages(size_t count) {
-	size_t index = 0;
+	size_t index = last_used_index;
+	size_t runs = 0;
 	size_t hits = 0;
-	while (index < (highest_page - MEM_OFFSET) / PAGE_SIZE) {
+	while (runs < (highest_page - MEM_OFFSET) / PAGE_SIZE) {
 		if (GETBIT(index) == false) {
 			if (hits++ == count) {
-				size_t page = index - count;
-				for (size_t i = 0; i < index; i++) {
-					SETBIT(i);
+				size_t page = (index - count) % ((highest_page - MEM_OFFSET) / PAGE_SIZE);
+				for (size_t i = 0; i < ((index - last_used_index) % ((highest_page - MEM_OFFSET) / PAGE_SIZE)); i++) {
+					SETBIT(i + page);
 				}
-				debug("allocated page at address %llx", page * PAGE_SIZE + MEM_OFFSET);
+				//debug("allocated page at address %llx", page * PAGE_SIZE + MEM_OFFSET);
+				last_used_index = index;
 				return (void *) (page * PAGE_SIZE + MEM_OFFSET);
-			} else {
-				hits = 0;
 			}
+		} else {
+			hits = 0;
 		}
 		index++;
+		index = index % ((highest_page - MEM_OFFSET) / PAGE_SIZE);
 	}
+
+	last_used_index = index;
 	return (void *) 0;
 }
 
