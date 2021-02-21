@@ -25,14 +25,21 @@ void kmalloc_init(struct stivale2_mmap_entry *memory_map, size_t memory_entries)
 	size_t memory_size = highest_page + (PAGE_SIZE - 1) / PAGE_SIZE;
 	size_t bitmap_size = memory_size / 8;
 
+	log("kmalloc bitmap size: 0x%llx", bitmap_size);
+
 	for (size_t i = 0; i < memory_entries; i++) {
 		struct stivale2_mmap_entry entry = memory_map[i];
 
 		if (entry.type != STIVALE2_MMAP_USABLE)
 			continue;
 
+
 		if (entry.length >= bitmap_size) {
 			kmalloc_map = (uint8_t *) entry.base + MEM_OFFSET;
+			debug("kmalloc filling bitmap");
+			/*for (uint8_t *ptr = kmalloc_map; (size_t) ptr < bitmap_size; ptr++) {
+				*ptr = 0xff;
+			}*/
 			memset(kmalloc_map, 0xff, bitmap_size);
 			entry.base += bitmap_size;
 			entry.length -= bitmap_size;
@@ -41,6 +48,8 @@ void kmalloc_init(struct stivale2_mmap_entry *memory_map, size_t memory_entries)
 		}
 	}
 
+	log("kmalloc usable memory:");
+
 	for (size_t j = 0; j < memory_entries; j++) {
 		struct stivale2_mmap_entry entry = memory_map[j];
 		if (entry.type != STIVALE2_MMAP_USABLE)
@@ -48,7 +57,11 @@ void kmalloc_init(struct stivale2_mmap_entry *memory_map, size_t memory_entries)
 
 		for (size_t length = 0; length < entry.length; length += PAGE_SIZE)
 			CLEARBIT((entry.base + length) / PAGE_SIZE);
+
+		log("\tbase: 0x%llx length 0x%llx", entry.base, entry.length);
 	}
+
+	log("kmalloc init:\n\tkmalloc map: 0x%llx\n\thighest page: 0x%llx", (uint64_t) kmalloc_map, highest_page);
 }
 
 void *kmalloc_allocate_page() {

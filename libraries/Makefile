@@ -1,4 +1,4 @@
-LIBS := libprintf.a klib.a
+LIBS := libprintf.a klib.a libtinf.a
 
 all: $(LIBS)
 	@true

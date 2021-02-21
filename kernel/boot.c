@@ -42,7 +42,6 @@ void *stivale2_get_tag(struct stivale2_struct *stivale2_struct, uint64_t id) {
 }
 
 void boot_main(struct stivale2_struct *info) {
-
 	struct stivale2_struct_tag_framebuffer *videoheader = stivale2_get_tag(info, STIVALE2_STRUCT_TAG_FRAMEBUFFER_ID);
 	struct stivale2_struct_tag_memmap *memory_map = stivale2_get_tag(info, STIVALE2_STRUCT_TAG_MEMMAP_ID);
 
@@ -69,6 +68,9 @@ void boot_main(struct stivale2_struct *info) {
 	bootinfo.framebuffer_height = videoheader->framebuffer_height;
         bootinfo.framebuffer_pitch = videoheader->framebuffer_pitch;
         bootinfo.framebuffer_bpp = videoheader->framebuffer_bpp;
+
+	bootinfo.memory_map = memory_map;
+	bootinfo.memory_entries = memory_map->entries;
 
 	kmain(bootinfo);
 
