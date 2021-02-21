@@ -36,11 +36,9 @@ void kmalloc_init(struct stivale2_mmap_entry *memory_map, size_t memory_entries)
 
 		if (entry.length >= bitmap_size) {
 			kmalloc_map = (uint8_t *) entry.base + MEM_OFFSET;
-			debug("kmalloc filling bitmap");
-			/*for (uint8_t *ptr = kmalloc_map; (size_t) ptr < bitmap_size; ptr++) {
+			for (uint8_t *ptr = kmalloc_map; (size_t) ptr < bitmap_size; ptr++) {
 				*ptr = 0xff;
-			}*/
-			memset(kmalloc_map, 0xff, bitmap_size);
+			}
 			entry.base += bitmap_size;
 			entry.length -= bitmap_size;
 
