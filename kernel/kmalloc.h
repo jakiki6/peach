@@ -19,3 +19,5 @@ void *kmalloc_callocate_pages(size_t count);
 
 void kmalloc_free_page(void *address);
 void kmalloc_free_pages(void *address, size_t count);
+
+uint8_t *kmalloc_get_map();

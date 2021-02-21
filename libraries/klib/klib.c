@@ -46,7 +46,7 @@ void kfree(void *address) {
 void panic(const char* format, ...) {
 	va_list args;
 	va_start(args, format);
-	sprintf((char *) &print_buffer, format, args);
+	vsnprintf((char *) &print_buffer, (size_t) -1, format, args);
 	va_end(args);
 	logging_panic((char *) &print_buffer);
 }
@@ -54,7 +54,7 @@ void panic(const char* format, ...) {
 void log(const char* format, ...) {
         va_list args;  
         va_start(args, format);
-        sprintf((char *) &print_buffer, format, args);
+        vsnprintf((char *) &print_buffer, (size_t) -1, format, args);
         va_end(args);
         logging_log((char *) &print_buffer);
 }
@@ -62,7 +62,7 @@ void log(const char* format, ...) {
 void debug(const char* format, ...) {
         va_list args;  
         va_start(args, format);
-        sprintf((char *) &print_buffer, format, args);
+        vsnprintf((char *) &print_buffer, (size_t) - 1, format, args);
         va_end(args);
         logging_debug((char *) &print_buffer);
 }

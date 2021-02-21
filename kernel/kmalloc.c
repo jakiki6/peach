@@ -1,7 +1,8 @@
 #include <stdint.h>
 #include <stddef.h>
+#include <klib/klib.h>
+#include <klib/memutils.h>
 
-#include "memutils.h"
 #include "kmalloc.h"
 
 static uint8_t *kmalloc_map;
@@ -57,13 +58,14 @@ void *kmalloc_allocate_page() {
 void *kmalloc_allocate_pages(size_t count) {
 	size_t index = 0;
 	size_t hits = 0;
-	while (index < highest_page / PAGE_SIZE) {
+	while (index < (highest_page - MEM_OFFSET) / PAGE_SIZE) {
 		if (GETBIT(index) == false) {
 			if (hits++ == count) {
 				size_t page = index - count;
 				for (size_t i = 0; i < index; i++) {
 					SETBIT(i);
 				}
+				debug("allocated page at address %llx", page * PAGE_SIZE + MEM_OFFSET);
 				return (void *) (page * PAGE_SIZE + MEM_OFFSET);
 			} else {
 				hits = 0;
@@ -71,7 +73,7 @@ void *kmalloc_allocate_pages(size_t count) {
 		}
 		index++;
 	}
-	return NULL;
+	return (void *) 0;
 }
 
 void *kmalloc_callocate_page() {
@@ -102,4 +104,8 @@ void kmalloc_free_pages(void *address, size_t count) {
 	for (size_t i = start_page; i < start_page + count; i++) {
 		CLEARBIT(i);
 	}
+}
+
+uint8_t *kmalloc_get_map() {
+	return kmalloc_map;
 }

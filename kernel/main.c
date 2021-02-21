@@ -1,6 +1,7 @@
 #include <stdint.h>
 #include <stddef.h>
 #include <klib/klib.h>
+#include <klib/memutils.h>
 
 #include "arch.h"
 #include "paging.h"
