@@ -6,7 +6,7 @@
 #include "logging.h"
 #include "arch.h"
 
-static uint8_t stack[65536];
+static uint8_t stack[33554432] = { 0 };
 
 struct stivale2_header_tag_framebuffer framebuffer_hdr_tag = {
 	.tag = {
@@ -72,7 +72,7 @@ void boot_main(struct stivale2_struct *info) {
 	bootinfo.memory_map = memory_map;
 	bootinfo.memory_entries = memory_map->entries;
 
-	kmain(bootinfo);
+	kmain(&bootinfo);
 
 	logging_panic("HOW DID YOU GET HERE WTF");
 }

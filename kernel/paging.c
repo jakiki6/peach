@@ -46,13 +46,13 @@ void paging_map_page(page_map *pagemap, uint64_t physical_address, uint64_t virt
 	pml1[level1] = physical_address | flags;
 }
 
-void paging_init(boot_info handover) {
+void paging_init(boot_info *handover) {
 	module("paging");
 
 	page_map *kernel_map = paging_new_pagemap();
 	log("kernel page map is at 0x%llx", kernel_map);
 
-	for (uint64_t i = 0; i < handover.memory_usable; i += PAGE_SIZE) {
+	for (uint64_t i = 0; i < handover->memory_usable; i += PAGE_SIZE) {
 		paging_map_page(kernel_map, i, i + MEM_OFFSET, 0b11);
 	}
 

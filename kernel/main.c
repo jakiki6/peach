@@ -11,7 +11,7 @@
 #include "gdt.h"
 #include "serial.h"
 
-void kmain(boot_info handover) {
+void kmain(boot_info *handover) {
 	// disable irq because we don't have idt yet
 	arch_interrupts_disable();
 
@@ -21,7 +21,7 @@ void kmain(boot_info handover) {
 	serial_init();
 
 	// log some data
-	log("usable memory: %lluMB of %lluMB", handover.memory_usable / 1024 / 1024, handover.total_memory / 1024 / 1024);
+	log("usable memory: %lluMB of %lluMB", handover->memory_usable / 1024 / 1024, handover->total_memory / 1024 / 1024);
 
 	// init gdt
 	log("loading gdt");
@@ -33,7 +33,7 @@ void kmain(boot_info handover) {
 
 	// init kmalloc
 	log("init kmalloc");
-	kmalloc_init(handover.memory_map->memmap, handover.memory_entries);
+	kmalloc_init(handover->memory_map->memmap, handover->memory_entries);
 
 	// setup paging
 	log("init paging");
