@@ -103,9 +103,13 @@ void *kmalloc_callocate_pages(size_t count) {
 	        return NULL;
 	}
 
-	for (size_t i = 0; i < count * PAGE_SIZE; i++) {
-		address[i] = 0;
-	}
+	asm volatile (
+		"cld \n\t"
+		"rep \n\t"
+		"stosb"
+		:
+		: "D"(address), "c"(count * PAGE_SIZE), "a"(0)
+	);
 
 	return address;
 }
