@@ -3,6 +3,8 @@
 #include <klib/klib.h>
 #include <klib/memutils.h>
 
+#include <macros.h>
+
 #include "kmalloc.h"
 
 static uint8_t *kmalloc_map;
@@ -106,9 +108,9 @@ void *kmalloc_callocate_pages(size_t count) {
 	asm volatile (
 		"cld \n\t"
 		"rep \n\t"
-		"stosb"
+		"stosq"
 		:
-		: "D"(address), "c"(count * PAGE_SIZE), "a"(0)
+		: "D"(address), "c"(count * PAGE_SIZE / 8), "a"(0)
 	);
 
 	return address;
