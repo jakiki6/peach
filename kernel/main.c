@@ -2,6 +2,8 @@
 #include <stddef.h>
 #include <klib/klib.h>
 #include <klib/memutils.h>
+#include <klib/rand.h>
+#include <klib/draw.h>
 
 #include "arch.h"
 #include "paging.h"
@@ -34,6 +36,11 @@ void kmain(boot_info *handover) {
 	// init kmalloc
 	log("init kmalloc");
 	kmalloc_init(handover->memory_map->memmap, handover->memory_entries);
+
+	// init drawing
+	draw_init((draw_color *) handover->framebuffer_addr, handover->framebuffer_height, handover->framebuffer_width);
+	// test it
+	draw_print("boot: drawing started");
 
 	// setup paging
 	log("init paging");

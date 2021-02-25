@@ -1,11 +1,11 @@
 #include <stddef.h>
 #include <stdint.h>
 #include <stdarg.h>
+#include <libprintf/printf.h>
+#include <kernel/kmalloc.h>
+#include <kernel/logging.h>
 
-#include "kmalloc.h"
 #include "klib.h"
-#include "logging.h"
-#include "printf.h"
 
 char print_buffer[512] = { 0 };
 

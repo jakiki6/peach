@@ -4,9 +4,9 @@ TARGET := klib.a
 
 INTERNALCFLAGS := $(INTERNALCFLAGS) \
         -I ../../include/	\
-        -I ../../kernel/	\
+        -I ../../		\
 	-I ../../thirdparty/stivale/ \
-	-I ../libprintf/
+	-I ..
 
 
 all: $(OBJ)

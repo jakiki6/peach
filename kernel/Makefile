@@ -3,7 +3,7 @@ include ../flags/kernel.mk
 TARGET := kernel.elf
 SYMBOLS := kernel.sym
 
-LIBS := ../libraries/klib.a ../libraries/libprintf.a
+LIBS := ../libraries/klib.a ../libraries/libprintf.a ../libraries/libvtconsole.a
 
 LDINTERNALFLAGS := $(LDINTERNALFLAGS) \
 	-Tlinker.ld

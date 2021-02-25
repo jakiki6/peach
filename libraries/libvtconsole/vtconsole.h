@@ -1,6 +1,7 @@
 #pragma once
 
 #include <stdint.h>
+#include <stdbool.h>
 
 #define VTC_DEFAULT_FOREGROUND VTCOLOR_GREY
 #define VTC_DEFAULT_BACKGROUND VTCOLOR_BLACK

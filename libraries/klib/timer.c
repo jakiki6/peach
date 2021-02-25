@@ -1,7 +1,8 @@
 #include <stdint.h>
+#include <kernel/arch.h>
+
 
 #include "klib.h"
-#include "arch.h"
 
 uint64_t timer_start() {
 	return arch_rdtsc();
