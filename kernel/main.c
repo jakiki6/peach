@@ -38,9 +38,9 @@ void kmain(boot_info *handover) {
 	kmalloc_init(handover->memory_map->memmap, handover->memory_entries);
 
 	// init drawing
+	log("init drawing");
 	draw_init((draw_color *) handover->framebuffer_addr, handover->framebuffer_height, handover->framebuffer_width);
-	// test it
-	draw_print("boot: drawing started");
+	draw_print("hi");
 
 	// setup paging
 	log("init paging");

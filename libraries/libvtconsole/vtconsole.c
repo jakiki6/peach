@@ -145,6 +145,7 @@ void vtconsole_append(vtconsole_t *vtc, char c) {
 		cell->c = c;
 		cell->attr = vtc->attr;
 
+
 		if (vtc->on_paint) {
 			vtc->on_paint(vtc, cell, vtc->cursor.x, vtc->cursor.y);
 		}
@@ -245,46 +246,46 @@ void vtconsole_process(vtconsole_t *vtc, char c) {
 	vtansi_parser_t *parser = &vtc->ansiparser;
 
 	switch (parser->state) {
-	case VTSTATE_ESC:
-		if (c == '\033') {
-			parser->state = VTSTATE_BRACKET;
+		case VTSTATE_ESC:
+			if (c == '\033') {
+				parser->state = VTSTATE_BRACKET;
 
-			parser->index = 0;
+				parser->index = 0;
 
-			parser->stack[parser->index].value = 0;
-			parser->stack[parser->index].empty = true;
-		} else {
-			parser->state = VTSTATE_ESC;
-			vtconsole_append(vtc, c);
-		}
-		break;
-
-	case VTSTATE_BRACKET:
-		if (c == '[') {
-			parser->state = VTSTATE_ATTR;
-		} else {
-			parser->state = VTSTATE_ESC;
-			vtconsole_append(vtc, c);
-		}
-		break;
-	case VTSTATE_ATTR:
-		if (isdigit(c)) {
-			parser->stack[parser->index].value *= 10;
-			parser->stack[parser->index].value += (c - '0');
-			parser->stack[parser->index].empty = false;
-		} else {
-			if ((parser->index) < VTC_ANSI_PARSER_STACK_SIZE) {
-				parser->index++;
+				parser->stack[parser->index].value = 0;
+				parser->stack[parser->index].empty = true;
+			} else {
+				parser->state = VTSTATE_ESC;
+				vtconsole_append(vtc, c);
 			}
+			break;
 
-			parser->stack[parser->index].value = 0;
-			parser->stack[parser->index].empty = true;
+		case VTSTATE_BRACKET:
+			if (c == '[') {
+				parser->state = VTSTATE_ATTR;
+			} else {
+				parser->state = VTSTATE_ESC;
+				vtconsole_append(vtc, c);
+			}
+			break;
+		case VTSTATE_ATTR:
+			if (isdigit(c)) {
+				parser->stack[parser->index].value *= 10;
+				parser->stack[parser->index].value += (c - '0');
+				parser->stack[parser->index].empty = false;
+			} else {
+				if ((parser->index) < VTC_ANSI_PARSER_STACK_SIZE) {
+					parser->index++;
+				}
 
-			parser->state = VTSTATE_ENDVAL;
-		}
-		break;
-	default:
-		break;
+				parser->stack[parser->index].value = 0;
+				parser->stack[parser->index].empty = true;
+
+				parser->state = VTSTATE_ENDVAL;
+			}
+			break;
+		default:
+			break;
 	}
 
 	if (parser->state == VTSTATE_ENDVAL) {

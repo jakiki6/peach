@@ -61,7 +61,9 @@ void kmalloc_init(struct stivale2_mmap_entry *memory_map, size_t memory_entries)
 		log("\tbase: 0x%llx length 0x%llx", entry.base, entry.length);
 	}
 
-	log("kmalloc init:\n\tkmalloc map: 0x%llx\n\thighest page: 0x%llx", (uint64_t) kmalloc_map, highest_page);
+	log("kmalloc init:");
+	log("\tkmalloc map: 0x%llx", (uint64_t) kmalloc_map);
+	log("\thighest page: 0x%llx", highest_page);
 }
 
 void *kmalloc_allocate_page() {
