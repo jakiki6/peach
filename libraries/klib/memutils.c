@@ -28,9 +28,13 @@ int memcmp(const void* aptr, const void* bptr, size_t size) {
 }
 
 void* memset(void* bufptr, int value, size_t size) {
-	unsigned char* buf = (unsigned char*) bufptr;
-	for (size_t i = 0; i < size; i++)
-		buf[i] = (unsigned char) value;
+	        asm volatile (
+                "cld \n\t"
+                "rep \n\t"
+                "stosb"
+                :
+                : "D"(bufptr), "c"(size), "a"(value)
+        );
 	return bufptr;
 }
 

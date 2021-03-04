@@ -105,13 +105,7 @@ void *kmalloc_callocate_pages(size_t count) {
 	        return NULL;
 	}
 
-	asm volatile (
-		"cld \n\t"
-		"rep \n\t"
-		"stosq"
-		:
-		: "D"(address), "c"(count * PAGE_SIZE / 8), "a"(0)
-	);
+	memset(address, 0, count * PAGE_SIZE);
 
 	return address;
 }
