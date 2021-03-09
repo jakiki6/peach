@@ -148,7 +148,7 @@ uint64_t arch_rdmsr(uint64_t msr) {
 
 void arch_set_code_segment(uint8_t value) {
 	asm volatile (
-		"mov %%cs, %%ax"
+		"mov %%ax, %%cs"
 		:
 		: "a"(value)
 	);
@@ -156,11 +156,11 @@ void arch_set_code_segment(uint8_t value) {
 
 void arch_set_data_segments(uint8_t value) {
         asm volatile (  
-                "mov %%ds, %%ax;"
-                "mov %%es, %%ax;"
-                "mov %%ss, %%ax;"
-                "mov %%fs, %%ax;"
-                "mov %%gs, %%ax;"
+                "mov %%ax, %%ds;"
+                "mov %%ax, %%es;"
+                "mov %%ax, %%ss;"
+                "mov %%ax, %%fs;"
+                "mov %%ax, %%gs;"
                 :
                 : "a"(value)
         );

@@ -58,11 +58,11 @@ void paging_init(boot_info *handover) {
 	uint64_t needed_l2 = UD(needed_l1, 512);
 	uint64_t needed_l3 = UD(needed_l2, 512);
 
-	for (uint64_t l4_index = 0; l4_index < needed_l3; l4_index++) {
+	for (uint64_t l4_index = 0x1ff; l4_index < (needed_l3 + 0x1ff); l4_index++) {
 		kernel_map->pml4[l4_index] = (uint64_t) kmalloc(PAGE_SIZE);
 
 		uint64_t *pml3 = (uint64_t *) kernel_map->pml4[l4_index];
-		for (uint64_t l3_index = 0; l3_index < needed_l2; l3_index++) {
+		for (uint64_t l3_index = 0x1fe; l3_index < (needed_l2 + 0x1fe); l3_index++) {
 			pml3[l3_index] = (uint64_t) kmalloc(PAGE_SIZE);
 
 			uint64_t *pml2 = (uint64_t *) pml3[l3_index];
