@@ -70,3 +70,11 @@ void debug(const char* format, ...) {
 void module(char *name) {
 	logging_module(name);
 }
+
+uint64_t UD(uint64_t num, uint64_t div) {
+	uint64_t res = num / div;
+	if (res < num) {
+		res += 1;
+	}
+	return res;
+}

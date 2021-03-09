@@ -53,8 +53,28 @@ void paging_init(boot_info *handover) {
 	page_map *kernel_map = paging_new_pagemap();
 	log("kernel page map is at 0x%llx", kernel_map);
 
-	for (uint64_t i = 0; i < handover->memory_usable; i += PAGE_SIZE) {
-		paging_map_page(kernel_map, i, i + MEM_OFFSET, 0b11);
+	uint64_t pages = handover->memory_usable / PAGE_SIZE;
+	uint64_t needed_l1 = UD(pages, 512);
+	uint64_t needed_l2 = UD(needed_l1, 512);
+	uint64_t needed_l3 = UD(needed_l2, 512);
+
+	for (uint64_t l4_index = 0; l4_index < needed_l3; l4_index++) {
+		kernel_map->pml4[l4_index] = (uint64_t) kmalloc(PAGE_SIZE);
+
+		uint64_t *pml3 = (uint64_t *) kernel_map->pml4[l4_index];
+		for (uint64_t l3_index = 0; l3_index < needed_l2; l3_index++) {
+			pml3[l3_index] = (uint64_t) kmalloc(PAGE_SIZE);
+
+			uint64_t *pml2 = (uint64_t *) pml3[l3_index];
+        	        for (uint64_t l2_index = 0; l2_index < needed_l1; l2_index++) {
+                	        pml2[l2_index] = (uint64_t) kmalloc(PAGE_SIZE);
+
+	                        uint64_t *pml1 = (uint64_t *) pml2[l2_index];
+                	        for (uint64_t l1_index = 0; l1_index < 512; l1_index++) {
+        	                        pml1[l1_index] = l4_index << 39 | l3_index << 30 | l2_index << 21 | l1_index << 12 | 0b11;
+                        	}
+	                }
+		}
 	}
 
 	log("finished mapping pages");

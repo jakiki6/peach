@@ -12,3 +12,4 @@ void panic(const char* format, ...);
 void log(const char* format, ...);
 void debug(const char* format, ...);
 void module(char *name);
+uint64_t UD(uint64_t num, uint64_t div);

@@ -3,7 +3,7 @@
 #define HIGH_OFFSET 0xffff800000000000
 
 typedef struct {
-	uintptr_t *pml4;
+	uint64_t *pml4;
 } page_map __attribute__((aligned(4096)));
 
 
